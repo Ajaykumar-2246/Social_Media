@@ -184,20 +184,12 @@ const ProfilePage = () => {
               <span className="text-gray-500"> Following</span>
             </div>
           </div>
-
-          {/* Edit Profile or Follow Button */}
-          {loggedInUserDetails?.user?._id === user?.user?._id ? (
-            <button
-              onClick={() => setEditModal(!editModal)}
-              className="mt-4 btn bg-gradient-to-r from-primary to-secondary text-white font-bold py-2 px-6 rounded-full hover:from-secondary hover:to-primary transition-all duration-300"
-            >
-              <Edit className="size-4" /> Edit Profile
-            </button>
-          ) : (
-            <button className="mt-4 btn btn-outline border-primary text-primary font-bold py-2 px-6 rounded-full hover:bg-primary hover:text-white transition-all duration-300">
-              Follow
-            </button>
-          )}
+          <button
+            onClick={() => setEditModal(!editModal)}
+            className="mt-4 btn bg-gradient-to-r from-primary to-secondary text-white font-bold py-2 px-6 rounded-full hover:from-secondary hover:to-primary transition-all duration-300"
+          >
+            <Edit className="size-4" /> Edit Profile
+          </button>
         </div>
 
         {/* Posts Section */}
