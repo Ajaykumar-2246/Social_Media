@@ -121,6 +121,9 @@ const CreateAndDisplayPost = () => {
   };
 
 
+  console.log("posts", posts);
+  console.log("loggedInUserDetails", loggedInUserDetails);
+  
 
   return (
     <div className="p-4 h-[calc(100vh-2rem)] overflow-y-auto no-scrollbar scroll-smooth border-r min-h-screen bg-base-100">
@@ -245,7 +248,7 @@ const CreateAndDisplayPost = () => {
         {posts && posts.length > 0 ? (
           posts.map((post) => (
             <div
-              key={post._id}
+              key={post?._id}
               className="card bg-base-200 shadow-md hover:shadow-lg transition-shadow duration-200"
             >
               <div className="card-body">
@@ -259,7 +262,7 @@ const CreateAndDisplayPost = () => {
                     className="size-9 rounded-full object-cover"
                   />
                   <div className="flex-1">
-                    <Link to={loggedInUserDetails.user._id === post.userId._id ? "/profile" : `/searchedProfile/${post.userId?._id}`}><h2 className="text-sm cursor-pointer  text-base-content">
+                    <Link to={loggedInUserDetails?.user?._id === post?.userId?._id ? "/profile" : `/searchedProfile/${post.userId?._id}`}><h2 className="text-sm cursor-pointer  text-base-content">
                       @{post.userId?.username || "Anonymous"}
                     </h2></Link>
                     {post.description && (
@@ -276,10 +279,10 @@ const CreateAndDisplayPost = () => {
                     )}
                     <div className="flex items-center justify-between mt-4">
                       <button
-                        onClick={() => handleLikePost(post._id)}
+                        onClick={() => handleLikePost(post?._id)}
                         className="btn btn-ghost btn-sm"
                       >
-                        {post.likes.includes(loggedInUserDetails.user._id) ? (
+                        {post.likes.includes(loggedInUserDetails?.user?._id) ? (
                           <HeartOff  className="size-5" />
                         ) : (
                           <Heart className="size-5" />
@@ -288,7 +291,7 @@ const CreateAndDisplayPost = () => {
                         <span className="">{post.likes.length || 0}</span>
                       </button>
                       <button
-                        onClick={() => handleSavePost(post._id)}
+                        onClick={() => handleSavePost(post?._id)}
                         className="btn btn-ghost btn-sm"
                       >
                         <Save className="size-5" />
