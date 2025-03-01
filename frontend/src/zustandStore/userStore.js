@@ -2,8 +2,8 @@ import { create } from "zustand";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const baseUrl = "https://chirpnet.onrender.com/api/user";
-// const baseUrl = "http://localhost:3000/api/user";
+// const baseUrl = "https://chirpnet.onrender.com/api/user";
+const baseUrl = "http://localhost:3000/api/user";
 axios.defaults.withCredentials = true;
 
 export const useUserStore = create((set, get) => ({

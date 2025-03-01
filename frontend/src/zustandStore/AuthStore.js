@@ -2,8 +2,8 @@ import { create } from "zustand";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-// const baseUrl = "http://localhost:3000/api/auth";
-const baseUrl = "https://chirpnet.onrender.com/api/auth";
+const baseUrl = "http://localhost:3000/api/auth";
+// const baseUrl = "https://chirpnet.onrender.com/api/auth";
 
 axios.defaults.withCredentials = true;
 
