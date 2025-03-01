@@ -2,7 +2,8 @@ import { create } from "zustand";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const baseUrl = "http://localhost:3000/api/post";
+const baseUrl = "https://chirpnet.onrender.com/api/post";
+// const baseUrl = "http://localhost:3000/api/post";
 axios.defaults.withCredentials = true;
 
 export const usePostStore = create((set) => ({
