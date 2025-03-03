@@ -24,7 +24,7 @@ const SideBar = () => {
       {/* Logo or Title */}
       <div className="mb-8 flex justify-center sm:justify-start">
         <h1 className="text-xl sm:text-2xl font-bold hidden sm:block ">
-        ChirpNet
+        LinkUp
         </h1>
       </div>
 
