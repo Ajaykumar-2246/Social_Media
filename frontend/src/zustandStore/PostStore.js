@@ -2,7 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const baseUrl = "https://chirpnet.onrender.com/api/post";
+const baseUrl = "https://linkup-zlqw.onrender.com/api/post";
 // const baseUrl = "http://localhost:3000/api/post";
 axios.defaults.withCredentials = true;
 
