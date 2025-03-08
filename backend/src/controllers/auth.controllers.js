@@ -17,28 +17,35 @@ const generateJwtToken = (userId, res) => {
     sameSite: "strict",
     secure: isProduction, // Only secure in production
   });
+
+  return token; // Return the token for the response
 };
 
 // Sign up a new user
 export const signUp = expressAsyncHandler(async (req, res) => {
-  const {username, fullName, email, password} = req.body;
+  const { username, fullName, email, password } = req.body;
 
+  // Validate required fields
   if (!username || !fullName || !email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  const Username= await User.findOne({ username });
-  const userExists = await User.findOne({ email });
-  if (userExists) {
-    return res.status(400).json({ message: "User already exists" });
+  // Check if username or email already exists
+  const existingUsername = await User.findOne({ username });
+  if (existingUsername) {
+    return res.status(400).json({ message: "Username is already taken" });
   }
 
-  if(Username){
-    return res.status(400).json({ message: "Username already exists" });
+  const existingEmail = await User.findOne({ email });
+  if (existingEmail) {
+    return res.status(400).json({ message: "Email is already registered" });
   }
+
+  // Hash the password
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
+  // Create the user
   const user = await User.create({
     username,
     fullName,
@@ -46,8 +53,10 @@ export const signUp = expressAsyncHandler(async (req, res) => {
     password: hashedPassword,
   });
 
-  generateJwtToken(user._id, res);
+  // Generate JWT token and set it in the cookie
+  const token = generateJwtToken(user._id, res);
 
+  // Return the user details and token in the response
   res.status(201).json({
     _id: user._id,
     username: user.username,
@@ -57,6 +66,7 @@ export const signUp = expressAsyncHandler(async (req, res) => {
     profileImg: user.profileImg,
     followers: user.followers,
     followings: user.followings,
+    token, // Token included in the response
     message: "User registered successfully",
   });
 });
@@ -65,22 +75,27 @@ export const signUp = expressAsyncHandler(async (req, res) => {
 export const login = expressAsyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
+  // Validate required fields
   if (!email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
+  // Check if the user exists
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(400).json({ message: "User not found" });
   }
 
+  // Compare the provided password with the hashed password
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     return res.status(400).json({ message: "Invalid credentials" });
   }
 
-  generateJwtToken(user._id, res);
+  // Generate JWT token and set it in the cookie
+  const token = generateJwtToken(user._id, res);
 
+  // Return the user details and token in the response
   res.status(200).json({
     _id: user._id,
     username: user.username,
@@ -90,24 +105,31 @@ export const login = expressAsyncHandler(async (req, res) => {
     profileImg: user.profileImg,
     followers: user.followers,
     followings: user.followings,
+    token, // Token included in the response
     message: "User logged in successfully",
   });
 });
 
 // Log out a user
 export const logout = expressAsyncHandler(async (req, res) => {
+  // Clear the JWT cookie
   res.cookie("jwtToken", "", {
-    maxAge: 0,
+    httpOnly: true,
+    maxAge: 0, // Expire the cookie immediately
+    sameSite: "strict",
+    secure: isProduction,
   });
+
   res.status(200).json({ message: "User logged out successfully" });
 });
 
 // Check if the user is authenticated
 export const checkAuth = expressAsyncHandler(async (req, res) => {
   const user = req.user;
+
   if (!user) {
     return res.status(401).json({ message: "Unauthorized, user not found" });
   }
 
-  res.status(200).json({ message: "User authenticated successfully", user});
+  res.status(200).json({ message: "User authenticated successfully", user });
 });
